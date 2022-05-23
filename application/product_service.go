@@ -1,5 +1,7 @@
 package application
 
+import "errors"
+
 type ProductService struct {
 	Persistence ProductPersistenceInterface
 }
@@ -39,6 +41,10 @@ func (service *ProductService) Create(name string, price float64) (ProductInterf
 }
 
 func (service *ProductService) Enable(product ProductInterface) (ProductInterface, error) {
+	if product.GetStatus() == ENABLED {
+		return &Product{}, errors.New("product already is enabled")
+	}
+
 	errorEnablingProduct := product.Enable()
 
 	if errorEnablingProduct != nil {
@@ -55,6 +61,10 @@ func (service *ProductService) Enable(product ProductInterface) (ProductInterfac
 }
 
 func (service *ProductService) Disable(product ProductInterface) (ProductInterface, error) {
+	if product.GetStatus() == DISABLED {
+		return &Product{}, errors.New("product already is disabled")
+	}
+
 	errorEnablingProduct := product.Disable()
 
 	if errorEnablingProduct != nil {

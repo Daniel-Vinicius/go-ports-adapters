@@ -19,7 +19,7 @@ var productPrice float64
 // cliCmd represents the cli command
 var cliCmd = &cobra.Command{
 	Use:   "cli",
-	Short: "A brief description of your command",
+	Short: "Execute CLI",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

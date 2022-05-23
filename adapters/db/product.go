@@ -35,14 +35,16 @@ func (productPersistenceSQLite *ProductPersistenceSQLite) Get(id string) (applic
 
 func (productPersistenceSQLite *ProductPersistenceSQLite) Save(product application.ProductInterface) (application.ProductInterface, error) {
 	var rows int
-	productPersistenceSQLite.db.QueryRow("SELECT id from products where id = ?", product.GetID()).Scan(&rows)
+	productPersistenceSQLite.db.QueryRow("SELECT COUNT(id) from products where id=?", product.GetID()).Scan(&rows)
 
 	if rows == 0 {
 		_, err := productPersistenceSQLite.create(product)
 		if err != nil {
 			return nil, err
 		}
-	} else {
+	}
+
+	if rows > 0 {
 		_, err := productPersistenceSQLite.update(product)
 		if err != nil {
 			return nil, err
